@@ -1,0 +1,26 @@
+# Virtual environment
+.venv/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Database (local only)
+production.db
+
+# Model files (large binary)
+model/model.pkl
+
+# Dataset (large file)
+data/
+
+# Secrets (Sprint 4 onwards)
+.env
+
+# VSCode
+.vscode/
+tempCodeRunnerFile.py
+
+# Alembic cache
+alembic/__pycache__/
