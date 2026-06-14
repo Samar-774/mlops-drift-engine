@@ -19,7 +19,7 @@ uvicorn app.main:app --reload
 ## Progress
 - [x] Sprint 1 — Predictive API
 - [x] Sprint 2 — Request logging
-- [ ] Sprint 3 — Drift detection
+- [x] Sprint 3 — Drift detection
 - [ ] Sprint 4 — Alert engine
 - [ ] Sprint 5 — Dockerization
 - [ ] Sprint 6 — Dashboard & deployment
