@@ -24,3 +24,8 @@ tempCodeRunnerFile.py
 
 # Alembic cache
 alembic/__pycache__/
+
+#celerybeat schedule files
+celerybeat-schedule
+celerybeat-schedule-shm
+celerybeat-schedule-wal
