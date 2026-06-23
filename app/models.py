@@ -1,4 +1,4 @@
-from sqlalchemy import Column,DateTime,Integer,Float
+from sqlalchemy import Column,DateTime,Integer,Float, String
 from datetime import datetime
 from .database import Base
 
@@ -9,7 +9,6 @@ class PredictionLog(Base):
     timestamp   = Column(DateTime, default=datetime.utcnow)
     prediction  = Column(Integer)
     probability = Column(Float)
-
     SeniorCitizen = Column(Float)
     tenure = Column(Float)
     MonthlyCharges = Column(Float)
@@ -55,3 +54,14 @@ class PredictionLog(Base):
     PaymentMethod_Credit_card_automatic = Column(Float)
     PaymentMethod_Electronic_check = Column(Float)
     PaymentMethod_Mailed_check = Column(Float)
+
+class DriftAlert(Base):
+    __tablename__="drift_alerts"
+
+    id          = Column(Integer, primary_key=True, index=True)
+    timestamp   = Column(DateTime, default=datetime.utcnow)
+    feature_name= Column(String)
+    ks_stat     = Column(Float)
+    p_value     = Column(Float)
+    severity    = Column(String)
+    notified_at = Column(DateTime,nullable=True)

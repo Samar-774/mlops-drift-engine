@@ -17,6 +17,17 @@ celery_app.conf.beat_schedule = {
         'schedule': 120,
     },
 }
+def compute_psi(train_sample,prod_values,bins=10):
+    train_counts, train_bin_edges = np.histogram(train_sample, bins)
+    prod_counts, prod_bin_edges = np.histogram(prod_values, bins=train_bin_edges)
+    train_pct = train_counts / np.sum(train_counts)
+    prod_pct = prod_counts / np.sum(prod_counts)
+    train_pct = np.where(train_pct == 0, 1e-10, train_pct)
+    prod_pct=np.where(prod_pct==0,1e-10,prod_pct)
+    psi_values = (prod_pct - train_pct) * np.log(prod_pct / train_pct)
+    psi = np.sum(psi_values)
+
+    return psi
 
 @celery_app.task
 def check_drift():
@@ -36,14 +47,17 @@ def check_drift():
         train_sample = np.random.normal(train_mean, train_std, 1000)
     
         stat, p_value = ks_2samp(train_sample, prod_values)
+        psi=compute_psi(train_sample,prod_values,bins=10)
         
     
         drift_report[feature] = {
             'ks_stat': float(stat),
             'p_value': float(p_value),
-            'drifted': bool(p_value<0.05)
+            'drifted': bool(p_value<0.05),
+            'psi'    : float(psi)
         }
     
     print(drift_report)
     return drift_report
-    
+
+
