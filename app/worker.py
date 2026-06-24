@@ -4,6 +4,7 @@ from scipy.stats import ks_2samp
 import json, numpy as np
 from app.database import SessionLocal
 from app.models import PredictionLog
+from .alerting import AlertManager,classify_severity
 
 celery_app = Celery(
     'drift_monitor',
@@ -35,7 +36,7 @@ def check_drift():
     
     db=SessionLocal()
     recent_logs=db.query(PredictionLog).order_by(PredictionLog.timestamp.desc()).limit(100).all()
-    db.close()
+    
     
     drift_report = {}
 
@@ -56,6 +57,13 @@ def check_drift():
             'drifted': bool(p_value<0.05),
             'psi'    : float(psi)
         }
+        if(p_value<0.05):
+            alert=AlertManager()
+            alert.create_alert(feature_name=feature,ks_stat=stat,p_value=p_value,psi=psi,db=db)
+            severity=classify_severity(psi).value
+            alert.send_notification(feature_name=feature,ks_stat=stat,severity=severity)
+
+    db.close()
     
     print(drift_report)
     return drift_report
