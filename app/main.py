@@ -1,7 +1,8 @@
 from sqlalchemy.orm import Session
 from fastapi import FastAPI,Depends
-from app.database import engine,get_db
-from app.models import PredictionLog,Base
+from .database import engine,get_db
+from .models import PredictionLog,Base
+from .models import DriftAlert
 from pydantic import BaseModel
 import joblib
 import numpy as np
@@ -79,3 +80,13 @@ def predict(request:PredictionRequest, db: Session=Depends(get_db)):
 def get_logs(limit: int= 100 , db:Session=Depends(get_db)):
     logs=db.query(PredictionLog).order_by(PredictionLog.timestamp.desc()).limit(limit).all()
     return logs
+
+@app.get('/alerts')
+def get_alerts(limit: int=100,db:Session=Depends(get_db)):
+    alerts=db.query(DriftAlert).order_by(DriftAlert.timestamp.desc()).limit(limit).all()
+    return alerts
+
+@app.get('/alerts/latest')
+def get_latest(db:Session=Depends(get_db)):
+    latest=db.query(DriftAlert).order_by(DriftAlert.timestamp.desc()).first()
+    return latest
