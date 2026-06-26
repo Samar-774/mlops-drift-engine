@@ -5,11 +5,12 @@ import json, numpy as np
 from app.database import SessionLocal
 from app.models import PredictionLog
 from .alerting import AlertManager,classify_severity
+import os
 
 celery_app = Celery(
     'drift_monitor',
-    broker='redis://localhost:6379/0',
-    backend='redis://localhost:6379/0'
+    broker=os.environ.get('REDIS_URL','redis://localhost:6379/0'),
+    backend=os.environ.get('REDIS_URL','redis://localhost:6379/0')
 )
 
 celery_app.conf.beat_schedule = {
