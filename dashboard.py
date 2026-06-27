@@ -26,7 +26,7 @@ if st.button("Send 50 Random Predictions"):
     with st.spinner("Sending predictions..."):        
         def send_request(_):                          
             customer = generate_random_customer()     
-            requests.post("http://localhost:8000/predict", json=customer)  
+            requests.post("https://mlops-drift-engine.onrender.com/predict", json=customer)  
 
         with ThreadPoolExecutor(max_workers=10) as executor:  
             executor.map(send_request, range(50)) 
