@@ -64,4 +64,10 @@ fig.add_trace(go.Histogram(x=prod_values, name="Production", opacity=0.7))
 fig.update_layout(barmode='overlay')
 st.plotly_chart(fig)
 
+st.subheader(f"Drift Over Time: {selected}")
+feature_alerts = read_alerts[read_alerts['feature_name'] == selected]
+feature_alerts = feature_alerts.copy()
+feature_alerts['time'] = pd.to_datetime(feature_alerts['timestamp']).dt.strftime('%H:%M')
+st.line_chart(feature_alerts.set_index('time')['ks_stat'])
+
 
