@@ -3,7 +3,7 @@ import requests
 
 API_URL='http://localhost:8000/predict'
 
-def genrate_random_customer():
+def generate_random_customer():
     return{
         'SeniorCitizen': float(np.random.uniform(0,1)),
         'tenure': float(np.random.uniform(0,72)),
@@ -52,7 +52,8 @@ def genrate_random_customer():
         'PaymentMethod_Mailed_check': float(np.random.uniform(0,1)),
     }
 
-for i in range(50):
-    customer=genrate_random_customer()
-    response=requests.post(API_URL,json=customer)
-    print(f'Request {i+1}:{response.json()}')
+if __name__ == '__main__':
+    for i in range(50):
+        customer=generate_random_customer()
+        response=requests.post(API_URL,json=customer)
+        print(f'Request {i+1}:{response.json()}')
