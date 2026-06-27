@@ -12,8 +12,6 @@ production.db
 # Model files (large binary)
 model/model.pkl
 
-# Dataset (large file)
-data/
 
 # Secrets (Sprint 4 onwards)
 .env
