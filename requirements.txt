@@ -54,6 +54,7 @@ pillow==12.2.0
 plotly==6.8.0
 prompt_toolkit==3.0.52
 protobuf==7.35.1
+psycopg2-binary==2.9.12
 pyarrow==24.0.0
 pydantic==2.13.4
 pydantic-extra-types==2.11.1
